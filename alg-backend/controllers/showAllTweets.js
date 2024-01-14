@@ -2,12 +2,12 @@ const userData = require("../models/users.json");
 const tweetData = require("../models/tweets.json");
 const moment = require("moment");
 
-const LastFiveTweetsController = {
-  getLastFiveTweets: (req, res, next) => {
+const showAllTweetsController = {
+  getAllTweets: (req, res, next) => {
     const sortedTweets = tweetData.sort(
-      (a, b) => new Date(a.created_at) - new Date(b.created_at)
+      (a, b) =>  new Date(b.created_at) - new Date(a.created_at)
     );
-    const lastFiveTweets = sortedTweets.slice(0, 5).map((tweet) => {
+    const lastFiveTweets = sortedTweets.map((tweet) => {
       const user_id = tweet.user_id;
       const likes_count = tweet.like_count;
       const comments_count = tweet.comment_count;
@@ -28,4 +28,4 @@ const LastFiveTweetsController = {
   },
 };
 
-module.exports = LastFiveTweetsController;
+module.exports = showAllTweetsController;

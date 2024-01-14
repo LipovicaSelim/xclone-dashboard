@@ -85,6 +85,50 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 });
 
+const toggleSortButton = document.querySelector("#sort-account-id");
+
+toggleSortButton.addEventListener("click", async () => {
+  let activeEndpoint = "last-five-ids";
+
+  const fetchDataAndRender = async (endpoint) => {
+    try {
+      const response = await fetch(`http://localhost:5000/totals/${endpoint}`);
+      const data = await response.json();
+      const tableBody = document.querySelector(".table tbody");
+      tableBody.innerHTML = "";
+
+      const accountsToRender = data[`${endpoint === "last-five-ids" ? "last" : "first"}FiveAccounts`];
+
+      if (accountsToRender) {
+        accountsToRender.forEach((account) => {
+          const newRow = document.createElement("tr");
+          newRow.innerHTML = `
+            <td><input class="form-check-input" type="checkbox"></td>
+            <td>${account.date}</td>
+            <td>${account.name}</td>
+            <td>${account.id}</td>
+            <td>${account.tweets}</td>
+            <td>${account.status}</td>
+            <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
+          `;
+          tableBody.appendChild(newRow);
+        });
+      } else {
+        console.error(`Error: ${endpoint}`);
+      }
+    } catch (error) {
+      console.error(`Error fetching ${endpoint} accounts: `, error);
+    }
+  };
+
+  await fetchDataAndRender(activeEndpoint);
+
+  toggleSortButton.addEventListener("click", async (e) => {
+    activeEndpoint = activeEndpoint === "last-five-ids" ? "first-five-ids" : "last-five-ids";
+    await fetchDataAndRender(activeEndpoint);
+  });
+});
+
 /*  ------------------- RECENT TWEETS SECTION --------------------------------------- */
 
 document.addEventListener("DOMContentLoaded", async () => {

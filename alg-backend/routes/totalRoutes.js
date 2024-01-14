@@ -11,5 +11,7 @@ router.get(
   "/last-five-accounts",
   LastFiveAccountsController.getLastFiveAccounts
 );
+router.get("/first-five-ids", FirstFiveId.getLastFiveAccounts);
+router.get("/last-five-ids", LastFiveId.getLastFiveAccounts);
 
 module.exports = router;

@@ -18,5 +18,8 @@ router.get(
   FirstFiveAccountsController.getFirstFiveAccounts
 );
 router.get("/last-five-tweets", LastFiveTweetsController.getLastFiveTweets);
+=======
+router.get("/first-five-ids", FirstFiveId.getLastFiveAccounts);
+router.get("/last-five-ids", LastFiveId.getLastFiveAccounts);
 
 module.exports = router;

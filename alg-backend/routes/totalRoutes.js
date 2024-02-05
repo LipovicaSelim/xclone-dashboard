@@ -20,8 +20,7 @@ const TweetFiveIdDscController = require("../controllers/tweetFiveIdDSC");
 const showAllTweetsController = require("../controllers/showAllTweets");
 const TweetsByLikeAsc = require("../controllers/tweetsByLikeASC");
 const TweetsByLikeDsc = require("../controllers/tweetsByLikeDSC");
-
-
+const TopThreeCountries = require("../controllers/worldwideTweets");
 
 router.get("/total-accounts", TotalAccountsController.getTotalAccounts);
 router.get("/total-tweets", TotalTweetsController.getTotalTweets);
@@ -41,7 +40,7 @@ router.get("/tweets-five-id-dsc", TweetFiveIdDscController.getTweetFiveIdDsc);
 router.get("/all-tweets", showAllTweetsController.getAllTweets);
 router.get("/tweets-like-asc", TweetsByLikeAsc.getTweetsByLikeAsc);
 router.get("/tweets-like-dsc", TweetsByLikeDsc.getTweetsByLikeDsc);
-
+router.get("/topThreeCountries", TopThreeCountries.calculateStatsByYear);
 
 //account routes
 router.get("/first-five-ids", FirstFiveId.getLastFiveAccounts);

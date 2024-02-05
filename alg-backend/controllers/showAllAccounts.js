@@ -7,7 +7,7 @@ const showAllAccounts = {
     const sortedUsers = userData.sort(
       (a, b) => new Date(a.created_at) - new Date(b.created_at)
     );
-    const firstFiveAccounts = sortedUsers.map((user) => {
+    const allAccounts = sortedUsers.map((user) => {
       const userTweets = tweetData.filter((tweet) => tweet.user_id === user.id);
       const numberOfTweets = userTweets.length;
 
@@ -23,7 +23,7 @@ const showAllAccounts = {
         status: user.isPremium ? "Premium" : "Normal",
       };
     });
-    res.json({ firstFiveAccounts });
+    res.json({ allAccounts });
   },
 };
 

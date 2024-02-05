@@ -210,7 +210,7 @@
                         <div class="bg-secondary text-center rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-4">
                                 <h6 class="mb-0">Activity Location</h6>
-                                <a href="">Show All</a>
+                                <a id="show-all" href="">Show All</a>
                             </div>
                             <canvas id="worldwide-sales"></canvas>
                         </div>
@@ -219,7 +219,7 @@
                         <div class="bg-secondary text-center rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-4">
                                 <h6 class="mb-0">Likes and Retweets</h6>
-                                <a href="">Show All</a>
+                                <a id="show-all">Show All</a>
                             </div>
                             <canvas id="salse-revenue"></canvas>
                         </div>
@@ -229,9 +229,9 @@
             <!-- Sales Chart End -->
 
 
-            <!-- Recent Sales Start -->
+            <!-- Recent Accounts Start -->
             <div class="container-fluid pt-4 px-4">
-                <div class="bg-secondary text-center rounded p-4">
+                <div class="bg-secondary text-center rounded p-4" id="recent-accounts-ctn">
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <h6 class="mb-0">Recent Accounts</h6>
                         <a id="show-all-accounts" href="">Show All</a>
@@ -298,6 +298,7 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="legend-text"><p></p></div>
                 </div>
             </div>
             <!-- Recent Sales End -->

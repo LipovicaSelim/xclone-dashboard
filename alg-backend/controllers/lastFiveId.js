@@ -62,6 +62,7 @@ const LastFiveId = {
         name: fullName,
         id: user.id,
         tweets: numberOfTweets,
+        status: user.isPremium ? "Premium" : "Normal",
       };
     });
 

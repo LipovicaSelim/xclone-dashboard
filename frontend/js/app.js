@@ -1,10 +1,12 @@
+/*  ----------- Total accounts, tweets, likes and revenues ---------------------------*/
+
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     const response = await fetch(`http://localhost:5000/totals/total-accounts`);
     const data = await response.json();
-    console.log("Total accounts: ", data);
+    const totalAccounts = data.totalAccounts;
 
-    document.getElementById("totalAccounts").textContent = data.totalAccounts;
+    document.getElementById("totalAccounts").textContent = totalAccounts;
   } catch (error) {
     console.error("Error fetching total accounts: ", error);
   }
@@ -14,9 +16,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     const response = await fetch(`http://localhost:5000/totals/total-tweets`);
     const data = await response.json();
-    console.log("Total tweets: ", data);
+    const totalTweets = data.totalTweets;
 
-    document.getElementById("totalTweets").textContent = data.totalTweets;
+    document.getElementById("totalTweets").textContent = totalTweets;
   } catch (error) {
     console.error("Error fetching total tweets: ", error);
   }
@@ -26,16 +28,23 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     const response = await fetch(`http://localhost:5000/totals/total-likes`);
     const data = await response.json();
-    console.log("Total likes: ", data);
+    const totalLikes = data.totalLikes;
 
-    document.getElementById("totalLikes").textContent = data.totalLikes;
+    document.getElementById("totalLikes").textContent = totalLikes;
   } catch (error) {
     console.error("Error fetching total likes: ", error);
   }
 });
 
+/* -----------------------------------------  Recent Accounts Section --------------------------------------------------  */
+
+const legendTextContainer = document.querySelector(".legend-text p");
+const recentAccountsContainer = document.getElementById("recent-accounts-ctn");
+
 document.addEventListener("DOMContentLoaded", async () => {
   let activeEndpoint = "last-five-accounts";
+
+  legendTextContainer.textContent = "Tim Sort Algorithm";
 
   const fetchDataAndRender = async (endpoint) => {
     try {
@@ -81,23 +90,32 @@ document.addEventListener("DOMContentLoaded", async () => {
         ? "first-five-accounts"
         : "last-five-accounts";
 
+    legendTextContainer.textContent = "Tim Sort Algorithm";
+    recentAccountsContainer.style.overflowY = "hidden";
+    recentAccountsContainer.style.maxHeight = "none";
+
     await fetchDataAndRender(activeEndpoint);
   });
 });
 
 const toggleSortButton = document.querySelector("#sort-account-id");
+let activeEndpointIds = "last-five-ids";
 
 toggleSortButton.addEventListener("click", async () => {
-  let activeEndpoint = "last-five-ids";
-
-  const fetchDataAndRender = async (endpoint) => {
+  const fetchDataAndRenderIds = async (endpoint) => {
     try {
       const response = await fetch(`http://localhost:5000/totals/${endpoint}`);
       const data = await response.json();
       const tableBody = document.querySelector(".table tbody");
       tableBody.innerHTML = "";
+      const recentAccountsContainer = document.getElementById(
+        "recent-accounts-ctn"
+      );
+      recentAccountsContainer.style.overflowY = "hidden !important";
 
-      const accountsToRender = data[`${endpoint === "last-five-ids" ? "last" : "first"}FiveAccounts`];
+      legendTextContainer.textContent = "Merge Sort Algorithm";
+
+      const accountsToRender = data.lastFiveAccounts;
 
       if (accountsToRender) {
         accountsToRender.forEach((account) => {
@@ -121,11 +139,65 @@ toggleSortButton.addEventListener("click", async () => {
     }
   };
 
-  await fetchDataAndRender(activeEndpoint);
+  activeEndpointIds =
+    activeEndpointIds === "last-five-ids" ? "first-five-ids" : "last-five-ids";
+  await fetchDataAndRenderIds(activeEndpointIds);
+});
 
-  toggleSortButton.addEventListener("click", async (e) => {
-    activeEndpoint = activeEndpoint === "last-five-ids" ? "first-five-ids" : "last-five-ids";
-    await fetchDataAndRender(activeEndpoint);
+document.addEventListener("DOMContentLoaded", () => {
+  const recentAccountsContainer = document.getElementById(
+    "recent-accounts-ctn"
+  );
+  const showAllButton = document.getElementById("show-all-accounts");
+
+  let isShowAllActive = false;
+
+  showAllButton.addEventListener("click", async (event) => {
+    event.preventDefault();
+
+    isShowAllActive = !isShowAllActive;
+
+    console.log("show-all got clicked:");
+
+    if (isShowAllActive) {
+      recentAccountsContainer.style.maxHeight = "372px";
+      recentAccountsContainer.style.overflowY = "scroll";
+      showAllButton.textContent = "";
+    } else {
+      recentAccountsContainer.style.maxHeight = "none";
+      recentAccountsContainer.style.overflow = "hidden";
+      showAllButton.textContent = "Show all";
+    }
+
+    const populateTableWithAllAccounts = async () => {
+      try {
+        const responseAllAccounts = await fetch(
+          `http://localhost:5000/totals/show-all-accounts`
+        );
+        const { allAccounts } = await responseAllAccounts.json();
+
+        const tableBody = document.querySelector(".table tbody");
+        tableBody.innerHTML = "";
+
+        allAccounts.forEach((account) => {
+          const newRow = document.createElement("tr");
+          newRow.innerHTML = `
+            <td><input class="form-check-input" type="checkbox"></td>
+            <td>${account.date}</td>
+            <td>${account.name}</td>
+            <td>${account.id}</td>
+            <td>${account.tweets}</td>
+            <td>${account.status}</td>
+            <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
+          `;
+          tableBody.appendChild(newRow);
+        });
+      } catch (error) {
+        console.error("Error fetching all accounts: ", error);
+      }
+    };
+
+    await populateTableWithAllAccounts();
   });
 });
 

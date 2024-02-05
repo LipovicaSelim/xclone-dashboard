@@ -286,3 +286,19 @@
   color: lightblue;
   transition: all 0.2s;
 }
+
+/* #recent-accounts-ctn {
+  overflow: hidden;
+  max-height: 372px;
+  overflow-y: scroll;
+} */
+
+.legend-text {
+  position: relative;
+  bottom: -15px;
+  left: 0;
+  color: rgb(142, 69, 69);
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: end;
+}

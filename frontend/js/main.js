@@ -90,30 +90,68 @@
   });
 
   // Salse & Revenue Chart
-  var ctx2 = $("#salse-revenue").get(0).getContext("2d");
-  var myChart2 = new Chart(ctx2, {
-    type: "line",
-    data: {
-      labels: ["2016", "2017", "2018", "2019", "2020", "2021", "2022"],
-      datasets: [
-        {
-          label: "Likes",
-          data: [15, 30, 55, 45, 70, 65, 85],
-          backgroundColor: "	#03396c",
-          fill: true,
-        },
-        {
-          label: "Retweets",
-          data: [99, 135, 170, 130, 190, 180, 270],
-          backgroundColor: "rgba(100, 151, 177, .7)",
-          fill: true,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-    },
+  $(document).ready(function () {
+    $.ajax({
+      url: "http://localhost:5000/totals/topThreeCountries",
+      method: "GET",
+      success: function (response) {
+        // console.log(response);
+
+        var ctx2 = $("#salse-revenue").get(0).getContext("2d");
+        var myChart2 = new Chart(ctx2, {
+          type: "line",
+          data: {
+            labels: response.labels,
+            datasets: [
+              {
+                label: "Likes",
+                data: response.likesData,
+                backgroundColor: "#03396c",
+                fill: true,
+              },
+              {
+                label: "Retweets",
+                data: response.retweetsData,
+                backgroundColor: "rgba(100, 151, 177, .7)",
+                fill: true,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+          },
+        });
+      },
+      error: function (xhr, status, error) {
+        console.error("Error fetching data:", error);
+      },
+    });
   });
+
+  // var ctx2 = $("#salse-revenue").get(0).getContext("2d");
+  // var myChart2 = new Chart(ctx2, {
+  //   type: "line",
+  //   data: {
+  //     labels: ["2016", "2017", "2018", "2019", "2020", "2021", "2022"],
+  //     datasets: [
+  //       {
+  //         label: "Likes",
+  //         data: [15, 30, 55, 45, 70, 65, 85],
+  //         backgroundColor: "	#03396c",
+  //         fill: true,
+  //       },
+  //       {
+  //         label: "Retweets",
+  //         data: [99, 135, 170, 130, 190, 180, 270],
+  //         backgroundColor: "rgba(100, 151, 177, .7)",
+  //         fill: true,
+  //       },
+  //     ],
+  //   },
+  //   options: {
+  //     responsive: true,
+  //   },
+  // });
 
   // Single Line Chart
   var ctx3 = $("#line-chart").get(0).getContext("2d");
